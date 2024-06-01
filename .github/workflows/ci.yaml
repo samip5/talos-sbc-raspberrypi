@@ -42,4 +42,4 @@ jobs:
           USERNAME: ${{ LOWERCASE_REPO_OWNER }}
           PLATFORM: linux/arm64
           PROGRESS: plain
-          CI_ARGS: "--cache-from=ghcr.io/${{ LOWERCASE_REPO_OWNER }}/sbc-turingrk1:cache --cache-to=ghcr.io/${{ LOWERCASE_REPO_OWNER }}/sbc-turingrk1:cache"
+          CI_ARGS: "--cache-from=ghcr.io/${{ LOWERCASE_REPO_OWNER }}/sbc-raspberrypi:cache --cache-to=ghcr.io/${{ LOWERCASE_REPO_OWNER }}/sbc-raspberrypi:cache"
