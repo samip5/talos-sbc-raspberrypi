@@ -1,0 +1,147 @@
+---
+name: Talos Boot Assets Generation
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Talos version
+        default: latest
+        required: false
+  schedule:
+    - cron: "0 * * * *"
+
+concurrency:
+  group: ${{ github.actor }}-build
+
+env:
+  TALOS_VERSION : "${{ inputs.version || 'latest' }}"
+
+jobs:
+  check-releases:
+    name: Check for new releases
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch Talos release version
+        id: talos-release
+        run: |
+          if [ "${{ env.TALOS_VERSION }}" == "latest" ]; then
+            talos_release_tag=$(curl -sL https://api.github.com/repos/siderolabs/talos/releases/latest | jq -r ".tag_name")
+          else
+            talos_release_tag="${{ env.TALOS_VERSION }}"
+          fi
+          echo "talos_release_tag=$talos_release_tag" >> $GITHUB_OUTPUT
+
+      - name: Fetch Talos release body
+        id: talos-release-body
+        run: |
+          echo 'talos_release_body<<EOF' >> $GITHUB_OUTPUT
+          curl -sL https://api.github.com/repos/siderolabs/talos/releases/tags/${{ steps.talos-release.outputs.talos_release_tag }} | jq -r ".body" >> $GITHUB_OUTPUT
+          echo EOF >> $GITHUB_OUTPUT
+
+      - name: Fetch latest Boot Asset release version
+        id: boot-asset-release
+        run: |
+          boot_assets_release_tag=$(curl -sL https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r ".tag_name")
+          echo "boot_assets_release_tag=$boot_assets_release_tag" >> $GITHUB_OUTPUT
+
+      - name: Compare release versions
+        if: steps.talos-release.outputs.talos_release_tag != steps.boot-asset-release.outputs.boot_assets_release_tag
+        id: compare-releases
+        run: |
+          curl https://raw.githubusercontent.com/Ariel-Rodriguez/sh-semversion-2/main/semver2.sh -o /tmp/semver2.sh
+          chmod +x /tmp/semver2.sh
+          compare_result=$(/tmp/semver2.sh \
+            ${{ steps.talos-release.outputs.talos_release_tag }} \
+            ${{ steps.boot-asset-release.outputs.boot_assets_release_tag }})
+          echo "compare_result=$compare_result" >> $GITHUB_OUTPUT
+
+    outputs:
+      newTalosReleaseFound: ${{ steps.compare-releases.outputs.compare_result }}
+      talosReleaseTag: ${{ steps.talos-release.outputs.talos_release_tag }}
+      talosReleaseBody: ${{ steps.talos-release-body.outputs.talos_release_body }}
+
+  build-boot-assets:
+    needs: [ check-releases ]
+    if: needs.check-releases.outputs.newTalosReleaseFound || github.event_name == 'workflow_dispatch'
+    name: Build boot assets
+    runs-on: buildjet-4vcpu-ubuntu-2204-arm
+
+    permissions:
+      contents: write
+
+    container:
+      image: registry.skysolutions.fi/library/installer:${{ needs.check-releases.outputs.talosReleaseTag }}
+      options: --privileged
+      volumes:
+        - /dev:/dev
+
+    steps:
+      - name: Build arm64 installer
+        run: |
+          /bin/imager installer \
+            --arch arm64 \
+            --base-installer-image registry.skysolutions.fi/library/installer:${{ needs.check-releases.outputs.talosReleaseTag }} \
+            --overlay-image ghcr.io/skyssolutions/sbc-raspberrypi:210f977 --overlay-name=rpi_generic
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: talos-installer
+          path: /out/installer-amd64.tar
+          if-no-files-found: error
+          retention-days: 1
+
+  push-installer-image:
+    needs: [ check-releases, build-boot-assets ]
+    name: Push installer image
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Download talos installer image
+        uses: actions/download-artifact@v3
+        with:
+          name: talos-installer
+          path: /tmp/talos-build-assets
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3.2.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: imjasonh/setup-crane@v0.3
+      - name: Push installer image
+        run: |
+          crane push \
+            --platform linux/arm64 \
+            /tmp/talos-build-assets/installer-arm64.tar \
+            ghcr.io/skyssolutions/installer:${{ needs.check-releases.outputs.talosReleaseTag }}
+
+  create-release:
+    needs: [ check-releases, push-installer-image ]
+    if: needs.check-releases.outputs.newTalosReleaseFound
+    name: Create a new release
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Create a new release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.check-releases.outputs.talosReleaseTag }}
+          body: ${{ needs.check-releases.outputs.talosReleaseBody }}
