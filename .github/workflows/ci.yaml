@@ -14,6 +14,9 @@ jobs:
       packages: write
 
     steps:
+      - name: Lowercase repository owner
+        shell: bash
+        run: echo "LOWERCASE_REPO_OWNER=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -32,11 +35,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push sbc turingrk1 overlay image
+      - name: Build and push sbc raspberrypi overlay image
         run: make
         env:
           PUSH: '1'
-          USERNAME: ${{ github.actor }}
+          USERNAME: ${{ LOWERCASE_REPO_OWNER }}
           PLATFORM: linux/arm64
           PROGRESS: plain
-          CI_ARGS: "--cache-from=ghcr.io/${{ github.actor }}/sbc-raspberrypi:cache --cache-to=ghcr.io/${{ github.actor }}/sbc-raspberrypi:cache"
+          CI_ARGS: "--cache-from=ghcr.io/${{ LOWERCASE_REPO_OWNER }}/sbc-turingrk1:cache --cache-to=ghcr.io/${{ LOWERCASE_REPO_OWNER }}/sbc-turingrk1:cache"
