@@ -39,7 +39,7 @@ jobs:
         run: make
         env:
           PUSH: '1'
-          USERNAME: ${{ LOWERCASE_REPO_OWNER }}
+          USERNAME: ${LOWERCASE_REPO_OWNER}
           PLATFORM: linux/arm64
           PROGRESS: plain
-          CI_ARGS: "--cache-from=ghcr.io/${{ LOWERCASE_REPO_OWNER }}/sbc-raspberrypi:cache --cache-to=ghcr.io/${{ LOWERCASE_REPO_OWNER }}/sbc-raspberrypi:cache"
+          CI_ARGS: "--cache-from=ghcr.io/${LOWERCASE_REPO_OWNER}/sbc-raspberrypi:cache --cache-to=ghcr.io/${LOWERCASE_REPO_OWNER}/sbc-raspberrypi:cache"
