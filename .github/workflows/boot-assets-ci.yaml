@@ -85,6 +85,11 @@ jobs:
             --base-installer-image registry.skysolutions.fi/library/installer:${{ needs.check-releases.outputs.talosReleaseTag }} \
             --overlay-image ghcr.io/skyssolutions/sbc-raspberrypi:210f977 --overlay-name=rpi_generic
 
+      - name: Run workaround for https://github.com/actions/runner/issues/801
+        run: |
+          apk add gcompat
+          sed -i "s:ID=alpine:ID=NotpineForGHA:" /etc/os-release
+
       - name: Upload installer artifact
         uses: actions/upload-artifact@v3
         with:
