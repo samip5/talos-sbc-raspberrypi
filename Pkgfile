@@ -5,12 +5,12 @@ format: v1alpha2
 vars:
   # renovate: datasource=git-refs versioning=git depName=https://github.com/raspberrypi/firmware.git
   raspberrypi_firmware_ref: 458df3adc11fccc3d26d3d6d8864738459290416
-  #raspberrypi_firmware_sha256: a37041044b4d46e324dc03f64455a7c79a38aaf77d0bfc03e6ad7052fc217cd1
-  #raspberrypi_firmware_sha512: cf5ed2ce16ee059c9c185ef53d079fb4a59720f1729c270480f2ffb46e5d990936ad58233486143f71d60116fd14e78edb81cd13feec1a787a47650d7eaaf56f
+  raspberrypi_firmware_sha256: 5e4e9117adec178bd7f7409ebf6b7cbff77436f907b7d5f96c65de190d71dacc
+  raspberrypi_firmware_sha512: e7974b5958ba6c7a2fa8aae06c989fee8136c12b3307de4cb099d108c157afb702a6d7379f81323e33352d83dd80ebea1ae5dcd9d1ac132dbe0ba49acddb2a4f
 
   # renovate: datasource=github-tags extractVersion=^v(?<version>.*)$ depName=u-boot/u-boot
   uboot_version: 2024.04
-  #uboot_sha256: b99611f1ed237bf3541bdc8434b68c96a6e05967061f992443cb30aabebef5b3
-  #uboot_sha512: 45bd093ba3bda23e43cdde83d8656c1ee1348ac2886ecff1fee475f101ac4965a5be6565408fa5b990c723f3fdc833edfca60a719f735a43040cd14a1b59a88b
+  uboot_sha256: 18a853fe39fad7ad03a90cc2d4275aeaed6da69735defac3492b80508843dd4a
+  uboot_sha512: a71270302b38e9e68a83b3acdf8f7635f72d9fa75169e3c2241cdfa21eab834b8f25dfd35c281191bccb2fcec1e86d6b64afcf1d2ed5cd4fdc02258cd75fc236
 labels:
   org.opencontainers.image.source: https://github.com/skyssolutions/talos-sbc-raspberrypi
