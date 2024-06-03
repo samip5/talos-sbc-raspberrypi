@@ -91,7 +91,7 @@ jobs:
           sed -i "s:ID=alpine:ID=NotpineForGHA:" /etc/os-release
 
       - name: Upload installer artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: talos-installer
           path: /out/installer-amd64.tar
@@ -109,7 +109,7 @@ jobs:
 
     steps:
       - name: Download talos installer image
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: talos-installer
           path: /tmp/talos-build-assets
@@ -146,7 +146,7 @@ jobs:
 
     steps:
       - name: Create a new release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.check-releases.outputs.talosReleaseTag }}
           body: ${{ needs.check-releases.outputs.talosReleaseBody }}
