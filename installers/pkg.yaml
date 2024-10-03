@@ -3,6 +3,8 @@ variant: scratch
 dependencies:
   - stage: rpi_generic
   - stage: raspberrypi-firmware
+  - stage: rpi5-uefi
+    platform: linux/arm64
   - stage: u-boot
     platform: linux/arm64
   - image: registry.skysolutions.fi/library/talos/kernel:latest@sha256:ee6b4247e25abff5c01a6d8e9c199b5790ed523b937f6b691a4039cbf6cfdbb5

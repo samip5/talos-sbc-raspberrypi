@@ -1,0 +1,21 @@
+name: rpi5-uefi
+variant: scratch
+shell: /toolchain/bin/bash
+dependencies:
+  - stage: base
+steps:
+  - sources:
+      - url: https://github.com/worproject/rpi5-uefi/archive/refs/tags/{{ .rpi5_uefi_version }}.tar.gz
+        destination: rpi5-uefi.tar.gz
+        sha256: "{{ .rpi5_uefi_sha256 }}"
+        sha512: "{{ .rpi5_uefi_sha512 }}"
+    prepare:
+      - |
+        tar -xzf rpi5-uefi.tar.gz --strip-components=1
+    install:
+      - |
+        mkdir -p /rootfs/artifacts/arm64/firmware/boot
+        cp -av boot/* /rootfs/artifacts/arm64/firmware/boot
+finalize:
+  - from: /rootfs
+    to: /rootfs
