@@ -5,17 +5,19 @@ dependencies:
   - stage: base
 steps:
   - sources:
-      - url: https://github.com/worproject/rpi5-uefi/archive/refs/tags/{{ .rpi5_uefi_version }}.tar.gz
-        destination: rpi5-uefi.tar.gz
+      - #url: https://s3.skym.fi/public/talos/rpi5-uefi-v{{ .rpi5_uefi_version }}.tar.gz
+        #url: https://github.com/worproject/rpi5-uefi/releases/download/v{{ .rpi5_uefi_version }}/RPi5_UEFI_Release_v{{ .rpi5_uefi_version }}.zip
+        url: https://github.com/worproject/rpi5-uefi/archive/{{ .rpi5_uefi_ref }}.tar.gz
+        destination: RPi5_UEFI.tar.gz
         sha256: "{{ .rpi5_uefi_sha256 }}"
         sha512: "{{ .rpi5_uefi_sha512 }}"
     prepare:
       - |
-        tar -xzf rpi5-uefi.tar.gz --strip-components=1
+        tar -xzf RPi5_UEFI.tar.gz --strip-components=1
     install:
       - |
         mkdir -p /rootfs/artifacts/arm64/firmware/boot
-        cp -av boot/* /rootfs/artifacts/arm64/firmware/boot
+        cp -av * /rootfs/artifacts/arm64/firmware/boot
 finalize:
   - from: /rootfs
     to: /rootfs
