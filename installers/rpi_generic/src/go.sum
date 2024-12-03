@@ -6,6 +6,8 @@ github.com/siderolabs/talos/pkg/machinery v1.7.5 h1:M02UZSDfN0BB4bXhTYDjEmVvAIX1
 github.com/siderolabs/talos/pkg/machinery v1.7.5/go.mod h1:OeamhNo92c3V96bddZNhcCgoRyzw2KWBtpma1lfchtg=
 github.com/siderolabs/talos/pkg/machinery v1.8.0 h1:azhBj+Nm9oTgaFgcNaHU8TPS9Oi5OdV1ELNgFAVder8=
 github.com/siderolabs/talos/pkg/machinery v1.8.0/go.mod h1:kkrPF7yyhNSg8yJx4RJnk21Hi3APAHm3HQm2M3zfwKI=
+github.com/siderolabs/talos/pkg/machinery v1.8.3 h1:raK1oLzSMpwpy/AqkeFyBYkJS+QuOnlRMznVl/rZ25k=
+github.com/siderolabs/talos/pkg/machinery v1.8.3/go.mod h1:cNR2TELu2T9AzYOHAoNr/7ZS3ZVDLzM/KnuOr4XW4s4=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
