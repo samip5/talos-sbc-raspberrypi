@@ -1,6 +1,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED, PLEASE DO NOT EDIT.
 #
-# Generated on 2024-07-04T17:31:06Z by kres 8c8b007.
+# Generated on 2025-01-17T10:20:43Z by kres 3b3f992.
 
 # common variables
 
@@ -13,7 +13,7 @@ IMAGE_TAG ?= $(TAG)
 OPERATING_SYSTEM := $(shell uname -s | tr '[:upper:]' '[:lower:]')
 GOARCH := $(shell uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')
 REGISTRY ?= ghcr.io
-USERNAME ?= siderolabs
+USERNAME ?= skyssolutions
 REGISTRY_AND_USERNAME ?= $(REGISTRY)/$(USERNAME)
 KRES_IMAGE ?= ghcr.io/siderolabs/kres:latest
 CONFORMANCE_IMAGE ?= ghcr.io/siderolabs/conform:latest
@@ -25,7 +25,7 @@ SOURCE_DATE_EPOCH := $(shell git log $(INITIAL_COMMIT_SHA) --pretty=%ct)
 
 # sync bldr image with pkgfile
 
-BLDR_RELEASE := v0.3.1
+BLDR_RELEASE := v0.3.2
 BLDR_IMAGE := ghcr.io/siderolabs/bldr:$(BLDR_RELEASE)
 BLDR := docker run --rm --user $(shell id -u):$(shell id -g) --volume $(PWD):/src --entrypoint=/bldr $(BLDR_IMAGE) --root=/src
 
@@ -47,7 +47,7 @@ COMMON_ARGS += --build-arg=PKGS="$(PKGS)"
 # extra variables
 
 PKGS_PREFIX ?= ghcr.io/siderolabs
-PKGS ?= v1.10.0-alpha.0
+PKGS ?= v1.9.0-21-gc1f06e5
 
 # targets defines all the available targets
 
@@ -55,7 +55,7 @@ TARGETS = sbc-raspberrypi
 
 # help menu
 
-define HELP_MENU_HEADER
+export define HELP_MENU_HEADER
 # Getting Started
 
 To build this project, you must have the following installed:
@@ -102,8 +102,6 @@ The registry and username can be overridden by exporting REGISTRY, and USERNAME
 respectively.
 
 endef
-
-export HELP_MENU_HEADER
 
 all: $(TARGETS)  ## Builds all targets defined.
 

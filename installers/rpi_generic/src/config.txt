@@ -3,8 +3,8 @@
 gpu_mem=32
 # Enable maximum compatibility on both HDMI ports;
 # only the one closest to the power/USB-C port will work in practice.
-hdmi_safe:0=1
-hdmi_safe:1=1
+#hdmi_safe:0=1
+#hdmi_safe:1=1
 # Load U-Boot.
 kernel=u-boot.bin
 # Forces the kernel loading system to assume a 64-bit kernel.
@@ -17,3 +17,5 @@ enable_uart=1
 dtoverlay=disable-bt
 # Disable Wireless Lan.
 dtoverlay=disable-wifi
+dtoverlay=vc4-kms-v3d
+disable_fw_kms_setup=1
