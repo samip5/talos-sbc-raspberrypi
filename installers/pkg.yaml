@@ -7,7 +7,7 @@ dependencies:
     platform: linux/arm64
   - stage: u-boot
     platform: linux/arm64
-  - image: ghcr.io/skyssolutions/kernel-rpi:v1.9.2-skylab.6@sha256:afbd60ca8e94694f24a1ae6cb65f7aa31e897a12cc15a75a0143cbb48121eb3b
+  - image: registry.skysolutions.fi/library/talos/kernel-rpi:arm64@sha256:c3bcf274e7fa34c414c4872433dcfaa490189e004a16baaf403b525f423f379a
     platform: linux/arm64
   - stage: profiles
 finalize:
