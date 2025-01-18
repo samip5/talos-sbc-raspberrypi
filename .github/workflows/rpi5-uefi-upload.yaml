@@ -28,4 +28,4 @@ jobs:
           key: ${{ secrets.SCP_PRIVATE_KEY }}
           port: 22
           source: "RPi5_UEFI_Release_v0.3.tar.gz"
-          target: "/home/users/kryptonian/public_html"
+          target: "/home/users/kryptonian/public_html/rpi5"
