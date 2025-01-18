@@ -1,0 +1,31 @@
+name: rpi5-uefi-upload workaround
+
+on:
+  workflow_dispatch:
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download
+        run: |
+          curl -L -o RPi5_UEFI_Release_v0.3.zip https://github.com/worproject/rpi5-uefi/releases/download/v0.3/RPi5_UEFI_Release_v0.3.zip
+
+      - name: Extract file
+        run: |
+          unzip RPi5_UEFI_Release_v0.3.zip -d RPi5_UEFI_Release_v0.3
+
+      - name: Compress extracted files
+        run: |
+          tar -czf RPi5_UEFI_Release_v0.3.tar.gz -C RPi5_UEFI_Release_v0.3 .
+
+      - name: Upload via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SCP_HOST }}
+          username: ${{ secrets.SCP_USERNAME }}
+          key: ${{ secrets.SCP_PRIVATE_KEY }}
+          port: 22
+          source: "RPi5_UEFI_Release_v0.3.tar.gz"
+          target: "/home/users/kryptonian/public_html"
