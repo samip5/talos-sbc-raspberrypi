@@ -50,6 +50,10 @@ func (i *RpiInstaller) Install(options overlay.InstallOptions[rpiOptions]) error
 	if err != nil {
 		return err
 	}
+	err = copy.File(filepath.Join(options.ArtifactsPath, "arm64/rpi5-uefi/RPI_EFI.fd"), filepath.Join(options.MountPrefix, "/boot/EFI/RPI_EFI.fd"))
+	if err != nil {
+		return err
+	}
 
 	if options.ExtraOptions.ConfigTxt != "" {
 		configTxt = []byte(options.ExtraOptions.ConfigTxt)

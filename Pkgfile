@@ -15,7 +15,7 @@ vars:
 
   # renovate: datasource=github-tags versioning=git depName=worproject/rpi5-uefi
   rpi5_uefi_ref: c1ca184c608dca75a346cc56b8eaf42648d83e86
-  rpi5_uefi_sha256: 48217423a3cf5921160d5f9dd5b3cc942a0ac82f26c7a9b751f82f5e37f925ac
-  rpi5_uefi_sha512: deb281e25fc48d0be22a0674658e98504b86287a6d2def486589b306c34149a0126484d52b736f4e7d52a77dae57af581242215c81db52e536affa343c19b071
+  rpi5_uefi_sha256: 4ac86a5c8c7601936e1f4b52b15b1b2ba925d74b4fc1a026018f393111d0d97f
+  rpi5_uefi_sha512: 2763b648fee0b5f8fb3b710253d09f071710342f324a4e252c657a2d13dbcc355c2e3cfac7203ce93d2ccc39cfd16a63954da7c7afd75beccbf50a93770ea76e
 labels:
   org.opencontainers.image.source: https://github.com/skyssolutions/talos-sbc-raspberrypi
