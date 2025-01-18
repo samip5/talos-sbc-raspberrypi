@@ -1,0 +1,74 @@
+---
+name: build
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Container image tag for the release
+        required: true
+
+concurrency:
+  group: ${{ github.actor }}-build
+
+jobs:
+  build:
+    name: Build overlay
+    runs-on: buildjet-4vcpu-ubuntu-2204-arm
+
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+
+    steps:
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Install crane
+        uses: imjasonh/setup-crane@v0.4
+
+      - name: Set release branch
+        id: set-rel
+        run: |
+          release_branch=release-$(grep -Eo '[0-9]\.[0-9]+' <<< ${{ inputs.release_tag }})
+          echo "release_branch=$release_branch" >> $GITHUB_OUTPUT
+
+      - name: Login ghcr.io
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::277707128529:role/talos-boot-assets-gha-terraform-buildkit
+          aws-region: eu-north-1
+          role-duration-seconds: 7200
+
+      - name: Checkout workflow
+        uses: actions/checkout@v4
+
+      - name: Setup buildkit
+        uses: docker/setup-buildx-action@v3
+        with:
+          platforms: linux/arm64
+
+      - name: Build sbc-raspberrypi
+        if: ${{ !failure() && !cancelled() }}
+        run: |
+          mkdir -p _out
+          registry="ghcr.io/${{ github.actor }}/siderolabs"
+          for target in sbc-raspberrypi; do
+            make $target \
+              PLATFORM="linux/arm64" \
+              USERNAME="${{ github.actor }}" \
+              REGISTRY_AND_USERNAME="$registry" \
+              TAG="${{ inputs.release_tag }}" \
+              PUSH="true" \
+              CI_ARGS="--metadata-file _out/meta --build-arg=BUILDKIT_MULTI_PLATFORM=1"
+            fq_image="$registry/$target:${{ inputs.release_tag }}@$(jq -j .\"containerimage.digest\" _out/meta)"
+            cosign sign --yes --recursive "$fq_image"
+          done
