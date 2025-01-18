@@ -41,13 +41,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::277707128529:role/talos-boot-assets-gha-terraform-buildkit
-          aws-region: eu-north-1
-          role-duration-seconds: 7200
-
       - name: Checkout workflow
         uses: actions/checkout@v4
 
