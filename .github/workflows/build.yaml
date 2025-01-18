@@ -1,5 +1,5 @@
 ---
-name: build
+name: overlay-build
 
 on:
   workflow_dispatch:
@@ -53,11 +53,11 @@ jobs:
         if: ${{ !failure() && !cancelled() }}
         run: |
           mkdir -p _out
-          registry="ghcr.io/${{ github.actor }}/siderolabs"
+          registry="ghcr.io/${{ github.repository_owner }}"
           for target in sbc-raspberrypi; do
             make $target \
               PLATFORM="linux/arm64" \
-              USERNAME="${{ github.actor }}" \
+              USERNAME="${{ github.repository_owner }}" \
               REGISTRY_AND_USERNAME="$registry" \
               TAG="${{ inputs.release_tag }}" \
               PUSH="true" \
