@@ -12,6 +12,7 @@ steps:
     prepare:
       - |
         tar -xzf raspberrypi-firmware.tar.gz --strip-components=1
+        find . -type f -name "*.img" -exec rm -v {} \;
     install:
       - |
         mkdir -p /rootfs/artifacts/arm64/firmware/boot
