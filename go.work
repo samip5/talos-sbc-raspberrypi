@@ -1,4 +1,6 @@
 go 1.23.3
 
-use ./installers/rpi_generic/src
-use ./installers/rpi_5/src
+use (
+	./installers/rpi_generic/src
+	./installers/rpi_5/src
+)
