@@ -7,6 +7,7 @@ package main
 import (
 	_ "embed"
 	"fmt"
+	"golang.org/x/sys/unix"
 	"os"
 	"path/filepath"
 
@@ -48,7 +49,7 @@ func (i *rpi5) GetOptions(extra rpi5ExtraOptions) (overlay.Options, error) {
 func (i *rpi5) Install(options overlay.InstallOptions[rpi5ExtraOptions]) error {
 	var f *os.File
 
-	f, err := os.OpenFile(options.InstallDisk, os.O_RDWR|nix.O_CLOEXEC, 0o666)
+	f, err := os.OpenFile(options.InstallDisk, os.O_RDWR|unix.O_CLOEXEC, 0o666)
 	if err != nil {
 		return fmt.Errorf("failed to open %s: %w", options.InstallDisk, err)
 	}
