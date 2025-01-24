@@ -14,7 +14,7 @@ concurrency:
 jobs:
   build:
     name: Build overlay
-    runs-on: buildjet-4vcpu-ubuntu-2204-arm
+    runs-on: ubuntu-24.04-arm
 
     permissions:
       contents: read
