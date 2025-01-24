@@ -2,7 +2,7 @@ module rpi_generic
 
 go 1.23.3
 
-toolchain go1.23.4
+toolchain go1.23.5
 
 require (
 	github.com/siderolabs/go-copy v0.1.0
