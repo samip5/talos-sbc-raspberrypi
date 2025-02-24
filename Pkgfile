@@ -1,10 +1,10 @@
-# syntax = ghcr.io/siderolabs/bldr:v0.3.2
+# syntax = ghcr.io/siderolabs/bldr:v0.4.1
 
 format: v1alpha2
 
 vars:
   # renovate: datasource=git-refs versioning=git depName=https://github.com/raspberrypi/firmware.git
-  raspberrypi_firmware_ref: 0b1c37755f820948fed2f2223a07abd083093c4e
+  raspberrypi_firmware_ref: 4cb13e06e8ff0868d2cbda12a867367b10fb6702
   raspberrypi_firmware_sha256: 585e69996fd79723601be7f3f392df82045c60242e980630e9fde73d1c74d68d
   raspberrypi_firmware_sha512: 3da2928779a85a03ad0b321092671462ad1d2003b621a9b4edd209617ce75aa5079db43329c57b2a4479169ba64912c2743407786454e7e7c9cfc9ba0c0c7906
 
@@ -14,7 +14,7 @@ vars:
   uboot_sha512: e22202b568f90de15e4e20317e13d68ce106256eadeeae5017241cdd4a1d133cdfd14297b403c7391bf65d022061ad4e1cbe862c480fddbd13f97b756305f188
 
   # renovate: datasource=github-tags versioning=git depName=worproject/rpi5-uefi
-  rpi5_uefi_ref: c1ca184c608dca75a346cc56b8eaf42648d83e86
+  rpi5_uefi_ref: a6135b06d661b5f11bbf4bd742b42a1919b264dc
   rpi5_uefi_sha256: 4ac86a5c8c7601936e1f4b52b15b1b2ba925d74b4fc1a026018f393111d0d97f
   rpi5_uefi_sha512: 2763b648fee0b5f8fb3b710253d09f071710342f324a4e252c657a2d13dbcc355c2e3cfac7203ce93d2ccc39cfd16a63954da7c7afd75beccbf50a93770ea76e
 labels:
